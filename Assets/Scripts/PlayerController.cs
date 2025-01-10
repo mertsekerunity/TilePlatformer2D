@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
+    [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
 
     Vector2 moveInput;
     Rigidbody2D rb2d;
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour
         {
             isAlive = false;
             animator.SetTrigger("Death");
+            rb2d.velocity = deathKick;
         }
     }
 }
