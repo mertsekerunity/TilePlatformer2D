@@ -6,14 +6,19 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 10f;
+    [SerializeField] float jumpSpeed = 5f;
 
     Vector2 moveInput;
     Rigidbody2D rb2d;
+    Animator animator;
+    BoxCollider2D boxCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -29,6 +34,19 @@ public class PlayerController : MonoBehaviour
         Debug.Log(moveInput);
     }
 
+    void OnJump(InputValue value)
+    {
+        if (!boxCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
+        { 
+            return; 
+        }
+
+        if (value.isPressed)
+        {
+            rb2d.velocity += new Vector2(0, jumpSpeed);
+        }
+    }
+
     void Walk()
     {
         Vector2 playerVelocity = new Vector2(moveInput.x * moveSpeed, rb2d.velocity.y);
@@ -38,6 +56,7 @@ public class PlayerController : MonoBehaviour
     void FlipSprite()
     {
         bool playerHasHorizontalSpeed = Mathf.Abs(rb2d.velocity.x) > Mathf.Epsilon;
+        animator.SetBool("isWalking", playerHasHorizontalSpeed);
 
         if (playerHasHorizontalSpeed)
         {
