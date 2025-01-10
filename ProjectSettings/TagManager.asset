@@ -14,7 +14,7 @@ TagManager:
   - Ground
   - Background
   - Player
-  - 
+  - Bouncy
   - 
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Platforms
     uniqueID: 1258147213
+    locked: 0
+  - name: Bouncy
+    uniqueID: 3914411869
     locked: 0
   - name: Player
     uniqueID: 4232380553
