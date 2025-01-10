@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     Rigidbody2D rb2d;
     Animator animator;
     BoxCollider2D boxCollider;
+    CapsuleCollider2D capsuleCollider;
+
+    bool isAlive = true;
 
     // Start is called before the first frame update
     void Start()
@@ -19,27 +22,29 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!isAlive) {  return; } // return is like break in here
         Walk();
         FlipSprite();
+        Die();
     }
 
     void OnMove(InputValue value)
     {
+        if (!isAlive) { return; } // return is like break in here
         moveInput = value.Get<Vector2>();
         Debug.Log(moveInput);
     }
 
     void OnJump(InputValue value)
     {
-        if (!boxCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) 
-        { 
-            return; 
-        }
+        if (!isAlive) { return; } // return is like break in here
+        if (!boxCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; } // return is like break in here
 
         if (value.isPressed)
         {
@@ -61,6 +66,14 @@ public class PlayerController : MonoBehaviour
         if (playerHasHorizontalSpeed)
         {
             transform.localScale = new Vector2((Mathf.Sign(rb2d.velocity.x) * Mathf.Abs(transform.localScale.x)), transform.localScale.y);
+        }
+    }
+
+    void Die()
+    {
+        if (capsuleCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")))
+        {
+            isAlive = false;
         }
     }
 }
