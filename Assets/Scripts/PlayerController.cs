@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
         if (capsuleCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")))
         {
             isAlive = false;
+            animator.SetTrigger("Death");
         }
     }
 }
