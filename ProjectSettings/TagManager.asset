@@ -16,8 +16,8 @@ TagManager:
   - Player
   - Bouncy
   - Enemies
-  - 
-  - 
+  - Hazards
+  - Exit
   - 
   - 
   - 
@@ -50,9 +50,15 @@ TagManager:
   - name: Bouncy
     uniqueID: 3914411869
     locked: 0
-  - name: Player
-    uniqueID: 4232380553
+  - name: Hazards
+    uniqueID: 3227484387
     locked: 0
   - name: Enemies
     uniqueID: 821343791
+    locked: 0
+  - name: Exit
+    uniqueID: 3687350193
+    locked: 0
+  - name: Player
+    uniqueID: 4232380553
     locked: 0
