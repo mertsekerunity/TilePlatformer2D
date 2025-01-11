@@ -8,28 +8,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeed = 10f;
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] Vector2 deathKick = new Vector2 (10f, 10f);
+    [SerializeField] PhysicsMaterial2D bouncinessMaterial;
+    [SerializeField] float deathKickDelay = 2f;
 
     Vector2 moveInput;
     Rigidbody2D rb2d;
     Animator animator;
     BoxCollider2D boxCollider;
     CapsuleCollider2D capsuleCollider;
+    bool isAlive;
 
-    bool isAlive = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        isAlive = true;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isAlive) {  return; } // return is like break in here
+        if (!isAlive) {  return; } // return is like break in
         Walk();
         FlipSprite();
         Die();
@@ -77,7 +81,26 @@ public class PlayerController : MonoBehaviour
             isAlive = false;
             animator.SetTrigger("Death");
             rb2d.velocity = deathKick;
-            FindObjectOfType<GameSession>().ProcessPlayerDeath();
+            StartCoroutine(ApplyDeathKick());
+        }
+    }
+
+    IEnumerator ApplyDeathKick() 
+    {
+        yield return new WaitForSecondsRealtime(deathKickDelay);
+        rb2d.bodyType = RigidbodyType2D.Static; //stop sliding after deathKick is applied
+        FindObjectOfType<GameSession>().ProcessPlayerDeath();
+    }
+
+    void SetBounciness()
+    {
+        if (isAlive)
+        {
+            bouncinessMaterial.bounciness = 1.2f;
+        }
+        else 
+        {
+            bouncinessMaterial.bounciness = 0f;
         }
     }
 }
