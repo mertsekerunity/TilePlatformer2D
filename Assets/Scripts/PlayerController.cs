@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive) { return; } // return is like break in here
         moveInput = value.Get<Vector2>();
-        Debug.Log(moveInput);
+        //Debug.Log(moveInput);
     }
 
     void OnJump(InputValue value)
