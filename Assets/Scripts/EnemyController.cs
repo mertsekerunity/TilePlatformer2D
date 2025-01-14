@@ -11,6 +11,8 @@ public class EnemyController : MonoBehaviour
     Animator animator;
     PlayerController player;
 
+    float attackAnimationDelay = 2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +36,8 @@ public class EnemyController : MonoBehaviour
 
     void FlipSkeletonSprite()
     {
-        transform.localScale = new Vector2(-(Mathf.Sign(rb2d.velocity.x)), 1);
+        //transform.localScale = new Vector2(-(Mathf.Sign(rb2d.velocity.x)), 1);
+        transform.localScale = new Vector2((-Mathf.Sign(rb2d.velocity.x) * Mathf.Abs(transform.localScale.x)), transform.localScale.y);
     }
 
     void Attack()
