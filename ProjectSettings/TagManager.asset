@@ -17,7 +17,7 @@ TagManager:
   - Bouncy
   - Enemies
   - Hazards
-  - Exit
+  - Interactables
   - 
   - 
   - 
@@ -56,7 +56,7 @@ TagManager:
   - name: Enemies
     uniqueID: 821343791
     locked: 0
-  - name: Exit
+  - name: Interactables
     uniqueID: 3687350193
     locked: 0
   - name: Player
