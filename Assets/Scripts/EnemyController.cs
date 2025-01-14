@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,15 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 10f;
+    //[SerializeField] PlayerController player;
+    PlayerController player;
 
     Rigidbody2D rb2d;
     CapsuleCollider2D capsuleCollider;
     Animator animator;
-    PlayerController player;
 
-    float attackAnimationDelay = 2f;
+    float attackAnimationDelay = 4f;
+    bool isAttacking;
 
     // Start is called before the first frame update
     void Start()
@@ -19,13 +22,14 @@ public class EnemyController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         animator = GetComponent<Animator>();
-        player = GetComponent<PlayerController>();
+        player = FindObjectOfType<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
         rb2d.velocity = new Vector2(moveSpeed, 0);
+        Attack();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -42,13 +46,15 @@ public class EnemyController : MonoBehaviour
 
     void Attack()
     {
+
         if (capsuleCollider.IsTouchingLayers(LayerMask.GetMask("Player")))
+
         {
-            if((transform.position.x - player.transform.position.x) < 0)
+            if ((gameObject.transform.position.x - player.transform.position.x) < 0)
             {
                 if (Mathf.Sign(rb2d.velocity.x) < 0)
                 {
-                    FlipSkeletonSprite();
+                    FlipSkeletonSprite();                    
                 }
             }
             else
@@ -58,8 +64,20 @@ public class EnemyController : MonoBehaviour
                     FlipSkeletonSprite();
                 }
             }
-            animator.SetTrigger("Attack");
+
+            if(!isAttacking)
+            {
+                isAttacking = true;
+                animator.SetTrigger("Attack");
+                StartCoroutine(ApplyAttackAnimation());
+            }
         }
+    }
+
+    IEnumerator ApplyAttackAnimation()
+    {
+        yield return new WaitForSecondsRealtime(attackAnimationDelay);
+        isAttacking = false;
 
     }
 }

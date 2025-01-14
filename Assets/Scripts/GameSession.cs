@@ -60,7 +60,7 @@ public class GameSession : MonoBehaviour
     {
         playerLives--;
         livesText.text = playerLives.ToString();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //comment out for debugging attack, die or health system
     }
 
     public void AddtoScore(int pointsToAdd)
