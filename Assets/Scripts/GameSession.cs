@@ -29,6 +29,9 @@ public class GameSession : MonoBehaviour
     {
         livesText.text = playerLives.ToString();
         scoreText.text = score.ToString();
+        Debug.Log("Texts are initialized properly");
+        Debug.Log($"Lives Text Active: {livesText.gameObject.activeSelf}");
+        Debug.Log($"Score Text Active: {scoreText.gameObject.activeSelf}");
     }
 
     // Update is called once per frame

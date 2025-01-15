@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     BoxCollider2D boxCollider;
     CapsuleCollider2D capsuleCollider;
+    public Slider healthbar;
     bool isAlive;
 
 
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour
         if (!isAlive) {  return; } // return is like break in
         Walk();
         FlipSprite();
-        Die();
+        //Die();
     }
 
     void OnMove(InputValue value)
@@ -71,18 +73,16 @@ public class PlayerController : MonoBehaviour
         if (playerHasHorizontalSpeed)
         {
             transform.localScale = new Vector2((Mathf.Sign(rb2d.velocity.x) * Mathf.Abs(transform.localScale.x)), transform.localScale.y);
+            healthbar.transform.localScale = new Vector2((Mathf.Sign(rb2d.velocity.x) * Mathf.Abs(healthbar.transform.localScale.x)), healthbar.transform.localScale.y);
         }
     }
 
-    void Die()
+    public void Die()
     {
-        if (capsuleCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards")))
-        {
-            isAlive = false;
-            animator.SetTrigger("Death");
-            rb2d.velocity = deathKick;
-            StartCoroutine(ApplyDeathKick());
-        }
+        isAlive = false;
+        animator.SetTrigger("Death");
+        rb2d.velocity = deathKick;
+        StartCoroutine(ApplyDeathKick());
     }
 
     IEnumerator ApplyDeathKick() 
