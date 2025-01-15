@@ -33,7 +33,6 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         TakeDamage();
-        Debug.Log("Current health:" + health);
         UpdateHealth();
     }
 
@@ -46,7 +45,6 @@ public class PlayerHealth : MonoBehaviour
         if (damage > 0)
         {
             health -= damage;
-            Debug.Log($"Player health: {health}");
 
             if (health <= 0)
             {
