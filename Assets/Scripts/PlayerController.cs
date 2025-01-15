@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PhysicsMaterial2D bouncinessMaterial;
     [SerializeField] float deathKickDelay = 2f;
 
-    Vector2 moveInput;
+    [HideInInspector] public Vector2 moveInput;
+    [HideInInspector] public Vector2 lastMoveInput;
     Rigidbody2D rb2d;
     Animator animator;
     BoxCollider2D boxCollider;
@@ -45,6 +46,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive) { return; } // return is like break in here
         moveInput = value.Get<Vector2>();
+
+        if (moveInput[0] != 0)
+        {
+            lastMoveInput[0] = moveInput[0];
+        }
         //Debug.Log(moveInput);
     }
 

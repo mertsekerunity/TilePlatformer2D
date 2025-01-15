@@ -13,8 +13,9 @@ public class EnemyController : MonoBehaviour
     CapsuleCollider2D capsuleCollider;
     Animator animator;
 
-    float attackAnimationDelay = 4f;
-    bool isAttacking;
+    float attackAnimationDelay = 0.8f;
+    bool isAttacking =false;
+    bool isFlippedDuringAttack =false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,13 +36,34 @@ public class EnemyController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         moveSpeed = -moveSpeed;
-        FlipSkeletonSprite();
+        FlipSkeletonSpriteForWalking();
     }
 
-    void FlipSkeletonSprite()
+    void FlipSkeletonSpriteForWalking()
     {
-        //transform.localScale = new Vector2(-(Mathf.Sign(rb2d.velocity.x)), 1);
         transform.localScale = new Vector2((-Mathf.Sign(rb2d.velocity.x) * Mathf.Abs(transform.localScale.x)), transform.localScale.y);
+    }
+
+    void FlipSkeletonSpriteForAttacking()
+    {
+        if (player.moveInput[0] != 0)
+        {
+            if (player.moveInput[0] == Mathf.Sign(rb2d.velocity.x))
+            {
+                transform.localScale = new Vector2((-Mathf.Sign(rb2d.velocity.x) * Mathf.Abs(transform.localScale.x)), transform.localScale.y);
+                isFlippedDuringAttack = true;
+                Debug.Log("Skeleton is flipped during attack!");
+            }
+        }
+        else
+        {
+            if (player.lastMoveInput[0] == Mathf.Sign(rb2d.velocity.x))
+            {
+                transform.localScale = new Vector2((-Mathf.Sign(rb2d.velocity.x) * Mathf.Abs(transform.localScale.x)), transform.localScale.y);
+                isFlippedDuringAttack = true;
+                Debug.Log("Skeleton is flipped during attack!, player is stopped");
+            }
+        }
     }
 
     void Attack()
@@ -52,20 +74,7 @@ public class EnemyController : MonoBehaviour
         {
             animator.SetBool("isWalking", false);
 
-            if ((gameObject.transform.position.x - player.transform.position.x) < 0)
-            {
-                if (Mathf.Sign(rb2d.velocity.x) < 0)
-                {
-                    FlipSkeletonSprite();                    
-                }
-            }
-            else
-            {
-                if (Mathf.Sign(rb2d.velocity.x) > 0)
-                {
-                    FlipSkeletonSprite();
-                }
-            }
+            FlipSkeletonSpriteForAttacking();
 
             if(!isAttacking)
             {
@@ -77,6 +86,11 @@ public class EnemyController : MonoBehaviour
         else
         {
             animator.SetBool("isWalking", true);
+            if (isFlippedDuringAttack)
+            {
+                isFlippedDuringAttack = false;
+                FlipSkeletonSpriteForWalking();
+            }
         }
     }
 
