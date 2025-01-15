@@ -50,6 +50,8 @@ public class EnemyController : MonoBehaviour
         if (capsuleCollider.IsTouchingLayers(LayerMask.GetMask("Player")))
 
         {
+            animator.SetBool("isWalking", false);
+
             if ((gameObject.transform.position.x - player.transform.position.x) < 0)
             {
                 if (Mathf.Sign(rb2d.velocity.x) < 0)
@@ -71,6 +73,10 @@ public class EnemyController : MonoBehaviour
                 animator.SetTrigger("Attack");
                 StartCoroutine(ApplyAttackAnimation());
             }
+        }
+        else
+        {
+            animator.SetBool("isWalking", true);
         }
     }
 
